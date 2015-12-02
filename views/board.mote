@@ -14,7 +14,7 @@
   % (0..5).each do |row|
     <tr>
       % (0..6).each do |col|
-        <td id="cell-{{col}}-{{5 - row}}">[{{ grid[col][row] || " " }}]</td>
+        <td id="cell-{{col}}-{{5 - row}}">[{{ grid[col][5 - row] || " " }}]</td>
       % end
     </tr>
   % end
