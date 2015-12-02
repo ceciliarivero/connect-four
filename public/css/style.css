@@ -1,0 +1,12 @@
+body {
+  font-family: monospace;
+}
+
+a.arrow {
+  color: transparent;
+  text-decoration: none;
+}
+
+a.arrow:hover {
+  cursor: s-resize;
+}

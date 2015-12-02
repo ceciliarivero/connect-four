@@ -1,0 +1,78 @@
+<table>
+  <tr id="arrows">
+    <td><a class="arrow" data-id="0">&nbsp;V&nbsp;</a></td>
+    <td><a class="arrow" data-id="1">&nbsp;V&nbsp;</a></td>
+    <td><a class="arrow" data-id="2">&nbsp;V&nbsp;</a></td>
+    <td><a class="arrow" data-id="3">&nbsp;V&nbsp;</a></td>
+    <td><a class="arrow" data-id="4">&nbsp;V&nbsp;</a></td>
+    <td><a class="arrow" data-id="5">&nbsp;V&nbsp;</a></td>
+    <td><a class="arrow" data-id="6">&nbsp;V&nbsp;</a></td>
+  </tr>
+
+  % (0..5).each do |row|
+    <tr>
+      % (0..6).each do |col|
+        <td id="cell-{{col}}-{{5 - row}}">[{{ grid[col][row] || " " }}]</td>
+      % end
+    </tr>
+  % end
+</table>
+
+<script>
+  function ajax () {
+    if (window.XMLHttpRequest) {
+      request = new XMLHttpRequest();
+    } else {
+      request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    return request;
+  }
+
+  function play(col) {
+    var pathname = window.location.pathname;
+    var url = pathname + "/play/" + col;
+
+    var request = ajax();
+    request.open("POST", url);
+
+    request.onreadystatechange = function () {
+      if (request.readyState===4) {
+        if(request.status!==200) {
+          alert(request.response);
+        } else {
+          console.log(request.response);
+        }
+      }
+    };
+
+    request.send();
+  }
+
+  var arrows = document.getElementById("arrows");
+
+  arrows.onclick = function(e) {
+    var col = e.target.dataset.id;
+
+    play(col);
+
+    return false;
+  }
+
+  var sse = new EventSource("/events");
+  var last_move = null;
+
+  sse.addEventListener("move", function(e) {
+    if(e.data !== last_move){
+      last_move = e.data;
+
+      var move = eval(e.data);
+
+      if(move !== undefined) {
+        var cell = document.getElementById("cell-" + move[0] + "-" + move[1]);
+
+        cell.innerHTML = "[" + move[2] + "]";
+      }
+    }
+  })
+</script>
