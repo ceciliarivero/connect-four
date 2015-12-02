@@ -2,6 +2,12 @@ class Guests < Cuba
   define do
     board = Board[1]
 
+    on "new" do
+      Board[1].reset!
+
+      res.redirect "/"
+    end
+
     on "events" do
       on get do
 

@@ -15,6 +15,10 @@ class Board < Ohm::Model
     self.serialized_grid = grid
   end
 
+  def reset!
+    update(serialized_grid: [], last_move: nil)
+  end
+
   def grid
     @grid ||= serialized_grid || []
 

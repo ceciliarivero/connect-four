@@ -1,3 +1,5 @@
+<a href="/new">Start new game</a>
+
 <table>
   <tr id="arrows">
     <td><a class="arrow" data-id="0">&nbsp;V&nbsp;</a></td>
